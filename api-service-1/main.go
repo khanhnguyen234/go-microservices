@@ -3,13 +3,25 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/products"
 )
 
+func Migrate(db *gorm.DB) {
+	db.AutoMigrate(&products.ProductModel{})
+}
+
 func main() {
+	db := common.Init()
+	Migrate(db)
+
 	route := gin.Default()
 	route.GET("/query", query)
-
 	route.GET("/param/:name/:id", param)
+
+	noAuth := route.Group("/no-auth")
+	products.ProductNoAuthRegister(noAuth.Group("/products"))
 	
 	route.Run(":7001")
 }

@@ -1,4 +1,4 @@
-module khanhnguyen234
+module khanhnguyen234/api-gateway
 
 go 1.14
 

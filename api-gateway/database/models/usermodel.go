@@ -2,16 +2,16 @@ package models
 
 import (
 	"database/sql"
-	"khanhnguyen234/common"
-	"khanhnguyen234/database/items"
+	"khanhnguyen234/api-gateway/common"
+	"khanhnguyen234/api-gateway/database/items"
 	"net/http"
 	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
 type UserPostForm struct {
-	Username string `form:"Username" json:"Username" xml:"Username" binding:"required"`
-	Password string `form:"Password" json:"Password" xml:"Password" binding:"required"`
+	Username string `form:"Username" json:"username" xml:"Username" binding:"required"`
+	Password string `form:"Password" json:"password" xml:"Password" binding:"required"`
 }
 
 const (
