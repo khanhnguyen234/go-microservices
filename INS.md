@@ -9,3 +9,7 @@ https://www.sohamkamani.com/blog/2017/10/18/parsing-json-in-golang/
 
 # Request
 https://www.thepolyglotdeveloper.com/2017/07/consume-restful-api-endpoints-golang-application/
+
+
+#### Redis
+redis-cli FLUSHALL

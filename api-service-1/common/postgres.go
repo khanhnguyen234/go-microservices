@@ -17,20 +17,20 @@ const (
 	host     = "localhost"
 	user     = "postgres"
 	password = "postgres"
-	dbname   = "go_service_1"
+	// dbname   = "go_service_1"
+	dbname   = "dump_go_service_1"
 )
 
 // Opening a database and save the reference to `Database` struct.
-func Init() *gorm.DB {
+func InitPostgreSQL() *gorm.DB {
 	conn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, dbname)
   db, err := gorm.Open("postgres", conn)
 	if err != nil {
 		fmt.Println("db err: ", err)
 	}
 	db.DB().SetMaxIdleConns(10)
-	//db.LogMode(true)
+	// db.LogMode(true)
 	DB = db
-	db.LogMode(true)
 	return DB
 }
 

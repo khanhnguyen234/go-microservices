@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"khanhnguyen234/api-service-1/common"
-	"khanhnguyen234/api-service-1/products"
+	"khanhnguyen234/api-service-1/apis/products"
 )
 
 func Migrate(db *gorm.DB) {
@@ -13,8 +13,10 @@ func Migrate(db *gorm.DB) {
 }
 
 func main() {
-	db := common.Init()
+	db := common.InitPostgreSQL()
 	Migrate(db)
+
+	common.InitRedis()
 
 	route := gin.Default()
 	route.GET("/query", query)

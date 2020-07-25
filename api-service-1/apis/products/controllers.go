@@ -3,9 +3,38 @@ package products
 import (
 	"github.com/gin-gonic/gin"
 	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/utils"
 	"fmt"
 	"net/http"
 )
+
+func ProductCache (c *gin.Context) {
+	var query ProductFilterRequest
+
+	if err := c.ShouldBindQuery(&query); err != nil {
+		c.JSON(400, gin.H{"msg": err})
+		return
+	}
+
+	stringResult, err := common.GetRedis(query.Price)
+	if (err != true) {
+		result := utils.ParseJsonToStruct(stringResult);
+		c.JSON(200, gin.H{"isCache": true, "count": result["Count"]})
+		return
+	}
+
+	var products []ProductModel
+	var count int
+	db := common.GetPostgreSQL()
+	db.Where("Price <= ?", query.Price).Find(&products).Count(&count)
+
+	result := make(map[string]interface{})
+	result["Count"] = count
+
+	redisValue := utils.ParseStructToJson(result)
+	common.SetRedis(query.Price, redisValue)
+	c.JSON(200, gin.H{"isCache": false, "count": result["Count"]})
+}
 
 func ProductCreate (c *gin.Context) {
 	var body ProductCreateRequest
@@ -58,8 +87,20 @@ func ProductFilter (c *gin.Context) {
 	fmt.Println(query);
 
 	var products []ProductModel
+	var count int
 	db := common.GetPostgreSQL()
-	db.Where("Price <= ?", query.Price).Find(&products)
+	db.Limit(10).Where("Price <= ?", query.Price).Find(&products).Count(&count)
 
-	c.JSON(200, gin.H{"result": products})
+	c.JSON(200, gin.H{"count": count, "result": products})
+}
+
+func DummyProduct() {
+	db := common.GetPostgreSQL()
+	for i := 0; i < 100000; i++ {
+		price := utils.RandomInt(1000000)
+		name := utils.RandomString(utils.RandomInt(1000))
+		product2 := ProductModel{Name: name, Price: price}
+		db.Create(&product2)
+	}
+	return
 }
