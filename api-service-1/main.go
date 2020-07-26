@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"khanhnguyen234/api-service-1/common"
 	"khanhnguyen234/api-service-1/apis/products"
+	"khanhnguyen234/api-service-1/apis/redis"
 )
 
 func Migrate(db *gorm.DB) {
@@ -24,6 +25,7 @@ func main() {
 
 	noAuth := route.Group("/no-auth")
 	products.ProductNoAuthRegister(noAuth.Group("/products"))
+	redis.RedisNoAuthCount(noAuth.Group("/redis"))
 	
 	route.Run(":7001")
 }

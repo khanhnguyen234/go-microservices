@@ -17,9 +17,9 @@ func InitRedis() *redis.Client {
 	return rdb
 }
 
-// func GetRedis() *redis.Client {
-// 	return RDB
-// }
+func Redis() *redis.Client {
+	return RDB
+}
 
 func SetRedis(key string, value string) error {
 	if err := RDB.Set(key, value, 0).Err(); err != nil {
