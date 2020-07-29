@@ -18,6 +18,7 @@ func main() {
 	Migrate(db)
 
 	common.InitRedis()
+	common.InitElasticsearch()
 
 	route := gin.Default()
 	route.GET("/query", query)
@@ -25,7 +26,7 @@ func main() {
 
 	noAuth := route.Group("/no-auth")
 	products.ProductNoAuthRegister(noAuth.Group("/products"))
-	redis.RedisNoAuthCount(noAuth.Group("/redis"))
+	redis.RedisNoAuth(noAuth.Group("/redis"))
 	
 	route.Run(":7001")
 }

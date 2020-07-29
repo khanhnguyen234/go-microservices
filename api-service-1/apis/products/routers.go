@@ -7,6 +7,7 @@ import (
 func ProductNoAuthRegister(router *gin.RouterGroup) {
 	router.GET("/", ProductList)
 	router.GET("/filter", ProductFilter)
+	router.GET("/search/:name", ProductSearch)
 	router.GET("/cache", ProductCache)
 	router.GET("/detail/:id", ProductDetail)
 	router.POST("/", ProductCreate)

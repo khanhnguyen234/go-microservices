@@ -12,4 +12,11 @@ https://www.thepolyglotdeveloper.com/2017/07/consume-restful-api-endpoints-golan
 
 
 #### Redis
-redis-cli FLUSHALL
+redis-cli 
+
+
+###### Docs
+- Gin: https://github.com/gin-gonic/gin
+- Gorm: https://gorm.io/docs/
+- Redis: https://github.com/go-redis/redis
+- Elasticsearch: https://github.com/olivere/elastic/wiki

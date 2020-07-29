@@ -17,8 +17,8 @@ const (
 	host     = "localhost"
 	user     = "postgres"
 	password = "postgres"
-	// dbname   = "go_service_1"
-	dbname   = "dump_go_service_1"
+	dbname   = "go_service_1"
+	// dbname   = "dump_go_service_1"
 )
 
 // Opening a database and save the reference to `Database` struct.

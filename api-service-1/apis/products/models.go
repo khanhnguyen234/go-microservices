@@ -13,6 +13,10 @@ type ProductDetailRequest struct {
 	Id string `uri:"id"`
 }
 
+type ProductSearchRequest struct {
+	Name string `uri:"name"`
+}
+
 type ProductFilterRequest struct {
 	Name string `form:"name"`
 	Price string `form:"price"`

@@ -50,8 +50,9 @@ func ProductCreate (c *gin.Context) {
 
 	db := common.GetPostgreSQL()
 	db.Create(&product)
+	elasticId := ElasticCreateProduct(product)
 
-	c.JSON(200, gin.H{"result": product})
+	c.JSON(200, gin.H{"result": product, "elasticId": elasticId})
 }
 
 func ProductList (c *gin.Context) {
@@ -99,13 +100,30 @@ func ProductFilter (c *gin.Context) {
 	c.JSON(200, gin.H{"count": count, "result": products})
 }
 
+func ProductSearch (c *gin.Context) {
+	redis.Increase()
+	var uri ProductSearchRequest
+
+	if err := c.ShouldBindUri(&uri); err != nil {
+		c.JSON(400, gin.H{"msg": err})
+		return
+	}
+	fmt.Println(uri);
+
+	products := ElasticGetProductByName(uri.Name)
+
+
+	c.JSON(200, gin.H{"result": products})
+}
+
 func DummyProduct() {
 	db := common.GetPostgreSQL()
 	for i := 0; i < 100000; i++ {
 		price := utils.RandomInt(1000000)
 		name := utils.RandomString(utils.RandomInt(1000))
-		product2 := ProductModel{Name: name, Price: price}
-		db.Create(&product2)
+		product := ProductModel{Name: name, Price: price}
+		db.Create(&product)
+		ElasticCreateProduct(product)
 	}
 	return
 }
