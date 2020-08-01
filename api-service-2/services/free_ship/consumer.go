@@ -1,14 +1,16 @@
-package _rabbitmq
+package free_ship
 
 import (
 	"log"
+	"encoding/json"
 	"khanhnguyen234/api-service-2/common"
+	"khanhnguyen234/api-service-2/_rabbitmq"
 )
 
-func LogsConsummer() {
-	ch, err := GetChannel()
+func FreeShipConsummer() {
+	ch, err := _rabbitmq.GetChannel()
 
-	queueLogs := Queue{
+	queueLogs := _rabbitmq.Queue{
 		ExchangeName: "logs",
 		ExchangeType: "fanout",
 		QueueName: "",
@@ -58,9 +60,13 @@ func LogsConsummer() {
 
 	go func() {
 		for d := range msgs {
-			log.Printf("[LogsConsumer] %s", d.Body)
+			var data FreeshipCreateConsume
+			json.Unmarshal([]byte(d.Body), &data)
+			InsertToMongo(data)
+
+			log.Printf("[Free Ship Consumer] %s", d.Body)
 		}
 	}()
 
-	log.Printf("[LogsConsumer] Waiting for messages.")
+	log.Printf("[Free Ship Consumer] Waiting for messages.")
 }

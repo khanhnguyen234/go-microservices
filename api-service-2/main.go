@@ -2,6 +2,8 @@ package main
 
 import (
 	"khanhnguyen234/api-service-2/_rabbitmq"
+	"khanhnguyen234/api-service-2/_mongo"
+	"khanhnguyen234/api-service-2/services/free_ship"
 )
 
 type Queue struct {
@@ -12,8 +14,9 @@ type Queue struct {
 }
 
 func main() {
+	_mongo.ConnectMongo()
 	_rabbitmq.ConnectRabbitMQ()
-	_rabbitmq.LogsConsummer()
+	free_ship.FreeShipConsummer()
 
 	forever := make(chan bool)
 	<-forever
