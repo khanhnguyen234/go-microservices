@@ -5,8 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/rabbitmq"
 	"khanhnguyen234/api-service-1/apis/products"
 	"khanhnguyen234/api-service-1/apis/redis"
+	"khanhnguyen234/api-service-1/apis/freeship"
 )
 
 func Migrate(db *gorm.DB) {
@@ -19,6 +21,7 @@ func main() {
 
 	common.InitRedis()
 	common.InitElasticsearch()
+	rabbitmq.ConnectRabbitMQ()
 
 	route := gin.Default()
 	route.GET("/query", query)
@@ -27,6 +30,7 @@ func main() {
 	noAuth := route.Group("/no-auth")
 	products.ProductNoAuthRegister(noAuth.Group("/products"))
 	redis.RedisNoAuth(noAuth.Group("/redis"))
+	freeship.FreeshipNoAuth(noAuth.Group("/freeship"))
 	
 	route.Run(":7001")
 }
