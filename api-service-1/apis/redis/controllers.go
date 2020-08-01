@@ -2,7 +2,7 @@ package redis
 
 import (
 	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/_redis"
 	"strconv"
 	"time"
 )
@@ -17,7 +17,7 @@ func Increase() int {
 	key := "COUNT_REQUEST"
 	var value int 
 
-	redis := common.Redis()
+	redis := _redis.GetRedis()
 	stringPrev, err := redis.Get(key).Result()
 	intPrev, err := strconv.Atoi(stringPrev)
 

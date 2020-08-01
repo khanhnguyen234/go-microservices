@@ -1,4 +1,4 @@
-package rabbitmq
+package _rabbitmq
 
 type Queue struct {
 	ExchangeName string

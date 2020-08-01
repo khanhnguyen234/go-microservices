@@ -1,4 +1,4 @@
-package common
+package _postgres
 
 import (
 	"fmt"
@@ -22,7 +22,7 @@ const (
 )
 
 // Opening a database and save the reference to `Database` struct.
-func InitPostgreSQL() *gorm.DB {
+func ConnectPostgres() *gorm.DB {
 	conn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, dbname)
   db, err := gorm.Open("postgres", conn)
 	if err != nil {
@@ -35,7 +35,7 @@ func InitPostgreSQL() *gorm.DB {
 }
 
 // Using this function to get a connection, you can create your connection pool here.
-func GetPostgreSQL() *gorm.DB {
+func GetPostgres() *gorm.DB {
 	return DB
 }
 

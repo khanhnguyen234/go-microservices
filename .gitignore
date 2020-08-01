@@ -16,4 +16,5 @@
 
 #File on MacOS
 .DS_Store
+.idea
 local

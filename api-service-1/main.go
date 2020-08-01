@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"khanhnguyen234/api-service-1/common"
-	"khanhnguyen234/api-service-1/rabbitmq"
+	"khanhnguyen234/api-service-1/_postgres"
+	"khanhnguyen234/api-service-1/_rabbitmq"
+	"khanhnguyen234/api-service-1/_redis"
+	"khanhnguyen234/api-service-1/_elastic"
 	"khanhnguyen234/api-service-1/apis/products"
 	"khanhnguyen234/api-service-1/apis/redis"
 	"khanhnguyen234/api-service-1/apis/freeship"
@@ -16,12 +18,12 @@ func Migrate(db *gorm.DB) {
 }
 
 func main() {
-	db := common.InitPostgreSQL()
-	Migrate(db)
+	_redis.ConnectRedis()
+	_elastic.ConnectElastic()
+	_rabbitmq.ConnectRabbitMQ()
+	db := _postgres.ConnectPostgres()
 
-	common.InitRedis()
-	common.InitElasticsearch()
-	rabbitmq.ConnectRabbitMQ()
+	Migrate(db)
 
 	route := gin.Default()
 	route.GET("/query", query)

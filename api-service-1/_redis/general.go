@@ -1,4 +1,4 @@
-package common
+package _redis
 
 import (
   "github.com/go-redis/redis/v7"
@@ -6,7 +6,7 @@ import (
 
 var RDB *redis.Client
 
-func InitRedis() *redis.Client {
+func ConnectRedis() *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379", // use default Addr
 		Password: "",               // no password set
@@ -17,18 +17,18 @@ func InitRedis() *redis.Client {
 	return rdb
 }
 
-func Redis() *redis.Client {
+func GetRedis() *redis.Client {
 	return RDB
 }
 
-func SetRedis(key string, value string) error {
+func Set(key string, value string) error {
 	if err := RDB.Set(key, value, 0).Err(); err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetRedis(key string) (string, bool){
+func Get(key string) (string, bool){
 	value, err := RDB.Get(key).Result()
 
 	if err != nil {

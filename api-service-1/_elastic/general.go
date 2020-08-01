@@ -1,4 +1,4 @@
-package common
+package _elastic
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 var elasticClient *elastic.Client
 
-func InitElasticsearch()  *elastic.Client {
+func ConnectElastic()  *elastic.Client {
 	var err error
 
 	for {
@@ -29,6 +29,6 @@ func InitElasticsearch()  *elastic.Client {
 	return elasticClient
 }
 
-func Elasticsearch() *elastic.Client {
+func GetElastic() *elastic.Client {
 	return elasticClient
 }

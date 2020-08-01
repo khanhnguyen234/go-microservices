@@ -2,7 +2,8 @@ package products
 
 import (
 	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/_redis"
+	"khanhnguyen234/api-service-1/_postgres"
 	"khanhnguyen234/api-service-1/utils"
 	"khanhnguyen234/api-service-1/apis/redis"
 	"fmt"
@@ -17,7 +18,7 @@ func ProductCache (c *gin.Context) {
 		return
 	}
 
-	stringResult, err := common.GetRedis(query.Price)
+	stringResult, err := _redis.Get(query.Price)
 	if (err != true) {
 		result := utils.ParseJsonToStruct(stringResult);
 		c.JSON(200, gin.H{"isCache": true, "count": result["Count"]})
@@ -26,14 +27,14 @@ func ProductCache (c *gin.Context) {
 
 	var products []ProductModel
 	var count int
-	db := common.GetPostgreSQL()
+	db := _postgres.GetPostgres()
 	db.Where("Price <= ?", query.Price).Find(&products).Count(&count)
 
 	result := make(map[string]interface{})
 	result["Count"] = count
 
 	redisValue := utils.ParseStructToJson(result)
-	common.SetRedis(query.Price, redisValue)
+	_redis.Set(query.Price, redisValue)
 	c.JSON(200, gin.H{"isCache": false, "count": result["Count"]})
 }
 
@@ -48,7 +49,7 @@ func ProductCreate (c *gin.Context) {
 
 	product := ProductModel{Name: body.Name, Price: body.Price}
 
-	db := common.GetPostgreSQL()
+	db := _postgres.GetPostgres()
 	db.Create(&product)
 	elasticId := ElasticCreateProduct(product)
 
@@ -59,7 +60,7 @@ func ProductList (c *gin.Context) {
 	redis.Increase()
 	var products []ProductModel
 
-	db := common.GetPostgreSQL()
+	db := _postgres.GetPostgres()
 	db.Find(&products)
 
 	c.JSON(200, gin.H{"result": products})
@@ -76,7 +77,7 @@ func ProductDetail (c *gin.Context) {
 	fmt.Println(uri);
 
 	var product ProductModel
-	db := common.GetPostgreSQL()
+	db := _postgres.GetPostgres()
 	db.Where("id = ?", uri.Id).First(&product)
 
 	c.JSON(200, gin.H{"result": product})
@@ -94,7 +95,7 @@ func ProductFilter (c *gin.Context) {
 
 	var products []ProductModel
 	var count int
-	db := common.GetPostgreSQL()
+	db := _postgres.GetPostgres()
 	db.Limit(10).Where("Price <= ?", query.Price).Find(&products).Count(&count)
 
 	c.JSON(200, gin.H{"count": count, "result": products})
@@ -117,7 +118,7 @@ func ProductSearch (c *gin.Context) {
 }
 
 func DummyProduct() {
-	db := common.GetPostgreSQL()
+	db := _postgres.GetPostgres()
 	for i := 0; i < 100000; i++ {
 		price := utils.RandomInt(1000000)
 		name := utils.RandomString(utils.RandomInt(1000))

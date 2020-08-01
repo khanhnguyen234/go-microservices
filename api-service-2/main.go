@@ -1,7 +1,7 @@
 package main
 
 import (
-	"khanhnguyen234/api-service-2/rabbitmq"
+	"khanhnguyen234/api-service-2/_rabbitmq"
 )
 
 type Queue struct {
@@ -12,8 +12,8 @@ type Queue struct {
 }
 
 func main() {
-	rabbitmq.ConnectRabbitMQ()
-	rabbitmq.LogsConsummer()
+	_rabbitmq.ConnectRabbitMQ()
+	_rabbitmq.LogsConsummer()
 
 	forever := make(chan bool)
 	<-forever

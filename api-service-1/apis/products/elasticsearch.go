@@ -1,7 +1,7 @@
 package products
 
 import (
-	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/_elastic"
 	"context"
 	"reflect"
 	"fmt"
@@ -14,7 +14,7 @@ const (
 
 func ElasticCreateProduct (product ProductModel) string {
 	ctx := context.Background()
-	elasticClient := common.Elasticsearch()
+	elasticClient := _elastic.GetElastic()
 
 	exists, err := elasticClient.IndexExists(elasticIndexName).Do(ctx)
 	if err != nil {
@@ -45,7 +45,7 @@ func ElasticCreateProduct (product ProductModel) string {
 
 func ElasticGetProductByName(name string) []ProductModel {
 	ctx := context.Background()
-	elasticClient := common.Elasticsearch()
+	elasticClient := _elastic.GetElastic()
 
 	_search := fmt.Sprintf(`
 	{
