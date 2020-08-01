@@ -26,7 +26,7 @@ func FreeShipConsummer() {
 		false,    // no-wait
 		nil,      // arguments
 	)
-	common.LogErrorService(err, "Failed to declare a queue")
+	common.LogError(err, "ExchangeDeclare")
 
 	q, err := ch.QueueDeclare(
 		queueLogs.QueueName,    // name
@@ -36,7 +36,7 @@ func FreeShipConsummer() {
 		false, // no-wait
 		nil,   // arguments
 	)
-	common.LogErrorService(err, "Failed to register a consumer")
+	common.LogError(err, "QueueDeclare")
 
 	err = ch.QueueBind(
 		queueLogs.QueueName, // queue name
@@ -45,7 +45,7 @@ func FreeShipConsummer() {
 		false,
 		nil,
 	)
-	common.LogErrorService(err, "Failed to register a consumer")
+	common.LogError(err, "QueueBind")
 
 	msgs, err := ch.Consume(
 		q.Name, // queue
@@ -56,7 +56,7 @@ func FreeShipConsummer() {
 		false,  // no-wait
 		nil,    // args
 	)
-	common.LogErrorService(err, "Failed to register a consumer")
+	common.LogError(err, "Failed to register a consumer")
 
 	go func() {
 		for d := range msgs {

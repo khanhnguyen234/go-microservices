@@ -3,10 +3,12 @@ package _redis
 import (
 	"github.com/go-redis/redis/v7"
 	"os"
+	"context"
 	"strconv"
 	"khanhnguyen234/api-service-1/common"
 )
 
+var ctx = context.Background()
 var RDB *redis.Client
 
 func ConnectRedis() *redis.Client {
@@ -18,8 +20,10 @@ func ConnectRedis() *redis.Client {
 		DB:       db,                // use default DB
 	})
 
+	_, err := rdb.Ping().Result()
+	common.LogStatus(err, "Connect Redis")
+
 	RDB = rdb
-	common.LogSuccess("Connect Redis")
 	return rdb
 }
 

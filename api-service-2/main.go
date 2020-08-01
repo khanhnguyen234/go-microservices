@@ -17,11 +17,14 @@ type Queue struct {
 
 func main() {
 	err := godotenv.Load()
-	common.LogErrorService(err, "Load Env")
+	common.LogStatus(err, "Load Env")
 
 	_mongo.ConnectMongo()
-	_rabbitmq.ConnectRabbitMQ()
-	free_ship.FreeShipConsummer()
+	_, err = _rabbitmq.ConnectRabbitMQ()
+
+	if err == nil {
+		free_ship.FreeShipConsummer()
+	}
 
 	forever := make(chan bool)
 	<-forever

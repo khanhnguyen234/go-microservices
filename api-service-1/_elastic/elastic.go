@@ -16,8 +16,7 @@ func ConnectElastic()  *elastic.Client {
 		elastic.SetURL(ELASTIC_URL),
 		elastic.SetSniff(false),
 	)
-	common.LogErrorService(err, "Connect Elastic")
-	common.LogSuccess("Connect Elasticsearch")
+	common.LogStatus(err, "Connect Elastic")
 	return elasticClient
 }
 

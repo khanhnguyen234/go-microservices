@@ -19,12 +19,11 @@ func ConnectPostgres() *gorm.DB {
 	os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DATABASE"))
 	
 	db, err := gorm.Open("postgres", conn)
-	common.LogErrorService(err, "Connect Postgres")
+	common.LogStatus(err, "Connect Postgres")
 	
 	db.DB().SetMaxIdleConns(10)
 	// db.LogMode(true)
 	DB = db
-	common.LogSuccess("Connect Postgres")
 	return DB
 }
 

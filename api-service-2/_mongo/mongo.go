@@ -4,7 +4,9 @@ import (
     "os"
     "go.mongodb.org/mongo-driver/mongo"
     "go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/mongo/readpref"
     "khanhnguyen234/api-service-2/common"
+
 )
 
 var mongodb *mongo.Database
@@ -12,17 +14,14 @@ var mongodb *mongo.Database
 func ConnectMongo() *mongo.Database {
     uri := os.Getenv("MONGO_URI")
     database := os.Getenv("MONGO_DATABASE")
-
-    client, err := mongo.NewClient(options.Client().ApplyURI(uri))
-    common.LogErrorService(err, "NewClient Mongo")
-
-
     ctx := common.GetContext()
-    err = client.Connect(ctx)
-    common.LogErrorService(err, "Connect Mongo")
+
+    client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+    err = client.Ping(ctx, readpref.Primary())
     
+    common.LogStatus(err, "Connect Mongo")
+
     mongodb := client.Database(database)
-    common.LogSuccess("Connect MongoDB")
     return mongodb
 }
 

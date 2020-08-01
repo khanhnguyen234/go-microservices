@@ -2,17 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
-	"github.com/joho/godotenv"
+	"khanhnguyen234/api-service-1/_elastic"
 	"khanhnguyen234/api-service-1/_postgres"
 	"khanhnguyen234/api-service-1/_rabbitmq"
 	"khanhnguyen234/api-service-1/_redis"
-	"khanhnguyen234/api-service-1/_elastic"
-	"khanhnguyen234/api-service-1/common"
+	"khanhnguyen234/api-service-1/apis/freeship"
 	"khanhnguyen234/api-service-1/apis/products"
 	"khanhnguyen234/api-service-1/apis/redis"
-	"khanhnguyen234/api-service-1/apis/freeship"
+	"khanhnguyen234/api-service-1/common"
+
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+	"github.com/joho/godotenv"
 )
 
 func Migrate(db *gorm.DB) {
@@ -21,8 +22,8 @@ func Migrate(db *gorm.DB) {
 
 func main() {
 	err := godotenv.Load()
-	common.LogErrorService(err, "Load Env")
-	
+	common.LogStatus(err, "Load Env")
+
 	_redis.ConnectRedis()
 	_elastic.ConnectElastic()
 	_rabbitmq.ConnectRabbitMQ()
@@ -46,7 +47,7 @@ func main() {
 
 type PersonQuery struct {
 	Name string `form:"name"`
-	ID string `form:"id"`
+	ID   string `form:"id"`
 }
 
 func query(c *gin.Context) {
@@ -59,13 +60,12 @@ func query(c *gin.Context) {
 	c.JSON(200, gin.H{"name": person.Name, "id": person.ID})
 }
 
-
 type PersonParam struct {
 	Name string `uri:"name"`
-	ID string `uri:"id"`
+	ID   string `uri:"id"`
 }
 
-func param(c *gin.Context)  {
+func param(c *gin.Context) {
 	var person PersonParam
 	if err := c.ShouldBindUri(&person); err != nil {
 		c.JSON(400, gin.H{"msg": err})

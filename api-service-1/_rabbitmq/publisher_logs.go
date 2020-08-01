@@ -25,7 +25,7 @@ func LogsPublisher(body string) {
 		false,    // no-wait
 		nil,      // arguments
 	)
-	common.LogErrorService(err, "Failed to declare a queue")
+	common.LogStatus(err, "Failed to declare a queue")
 	
 	err = ch.Publish(
 		"logs", // exchange
