@@ -1,19 +1,25 @@
 package _redis
 
 import (
-  "github.com/go-redis/redis/v7"
+	"github.com/go-redis/redis/v7"
+	"os"
+	"strconv"
+	"khanhnguyen234/api-service-1/common"
 )
 
 var RDB *redis.Client
 
 func ConnectRedis() *redis.Client {
+	db, _ := strconv.Atoi(os.Getenv("REDIS_DATABASE"))
+
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // use default Addr
-		Password: "",               // no password set
-		DB:       0,                // use default DB
+		Addr:     os.Getenv("REDIS_URL"), // use default Addr
+		Password: os.Getenv("REDIS_PASSWORD"),               // no password set
+		DB:       db,                // use default DB
 	})
 
 	RDB = rdb
+	common.LogSuccess("Connect Redis")
 	return rdb
 }
 

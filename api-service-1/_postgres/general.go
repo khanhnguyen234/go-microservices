@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
   _ "github.com/jinzhu/gorm/dialects/postgres"
 	"os"
+	"khanhnguyen234/api-service-1/common"
 )
 
 type Database struct {
@@ -13,24 +14,17 @@ type Database struct {
 
 var DB *gorm.DB
 
-const (
-	host     = "localhost"
-	user     = "postgres"
-	password = "postgres"
-	dbname   = "go_service_1"
-	// dbname   = "dump_go_service_1"
-)
-
-// Opening a database and save the reference to `Database` struct.
 func ConnectPostgres() *gorm.DB {
-	conn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, dbname)
-  db, err := gorm.Open("postgres", conn)
-	if err != nil {
-		fmt.Println("db err: ", err)
-	}
+	conn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", 
+	os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DATABASE"))
+	
+	db, err := gorm.Open("postgres", conn)
+	common.LogErrorService(err, "Connect Postgres")
+	
 	db.DB().SetMaxIdleConns(10)
 	// db.LogMode(true)
 	DB = db
+	common.LogSuccess("Connect Postgres")
 	return DB
 }
 

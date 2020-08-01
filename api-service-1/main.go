@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"github.com/joho/godotenv"
 	"khanhnguyen234/api-service-1/_postgres"
 	"khanhnguyen234/api-service-1/_rabbitmq"
 	"khanhnguyen234/api-service-1/_redis"
 	"khanhnguyen234/api-service-1/_elastic"
+	"khanhnguyen234/api-service-1/common"
 	"khanhnguyen234/api-service-1/apis/products"
 	"khanhnguyen234/api-service-1/apis/redis"
 	"khanhnguyen234/api-service-1/apis/freeship"
@@ -18,6 +20,9 @@ func Migrate(db *gorm.DB) {
 }
 
 func main() {
+	err := godotenv.Load()
+	common.LogErrorService(err, "Load Env")
+	
 	_redis.ConnectRedis()
 	_elastic.ConnectElastic()
 	_rabbitmq.ConnectRabbitMQ()
@@ -25,6 +30,7 @@ func main() {
 
 	Migrate(db)
 
+	gin.SetMode(gin.ReleaseMode)
 	route := gin.Default()
 	route.GET("/query", query)
 	route.GET("/param/:name/:id", param)
@@ -33,7 +39,8 @@ func main() {
 	products.ProductNoAuthRegister(noAuth.Group("/products"))
 	redis.RedisNoAuth(noAuth.Group("/redis"))
 	freeship.FreeshipNoAuth(noAuth.Group("/freeship"))
-	
+
+	common.LogSuccess("Listening and serving HTTP on :7001")
 	route.Run(":7001")
 }
 

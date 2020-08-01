@@ -1,31 +1,23 @@
 package _elastic
 
 import (
-	"fmt"
-	"log"
-	"time"
+	"os"
 	"github.com/olivere/elastic/v7"
+	"khanhnguyen234/api-service-1/common"
 )
 
 var elasticClient *elastic.Client
 
 func ConnectElastic()  *elastic.Client {
 	var err error
+	ELASTIC_URL := os.Getenv("ELASTIC_URL")
 
-	for {
-		elasticClient, err = elastic.NewClient(
-			elastic.SetURL("http://localhost:9200"),
-			elastic.SetSniff(false),
-		)
-		if err != nil {
-			log.Println(err)
-			time.Sleep(3 * time.Second)
-			fmt.Println("Retry Elasticsearch....")
-		} else {
-			break
-		}
-	}
-
+	elasticClient, err = elastic.NewClient(
+		elastic.SetURL(ELASTIC_URL),
+		elastic.SetSniff(false),
+	)
+	common.LogErrorService(err, "Connect Elastic")
+	common.LogSuccess("Connect Elasticsearch")
 	return elasticClient
 }
 

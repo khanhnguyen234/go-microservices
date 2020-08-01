@@ -3,13 +3,16 @@ package _rabbitmq
 import (
 	"github.com/streadway/amqp"
 	"khanhnguyen234/api-service-2/common"
+	"os"
 )
 
 var rabbitmq *amqp.Connection
 
 func ConnectRabbitMQ() (*amqp.Connection, error) {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial(os.Getenv("RABBITMQ_DIAL"))
+	common.LogErrorService(err, "Connect RabbitMQ")
 	rabbitmq = conn
+	common.LogSuccess("Connect RabbitMQ")
 	return conn, err
 }
 

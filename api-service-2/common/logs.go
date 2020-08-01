@@ -1,15 +1,15 @@
 package common
 
 import (
-	"log"
+	"github.com/fatih/color"
 )
 
 func LogErrorService(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
+		color.Red("FAIL: %s %s", msg, err)
 	}
 }
 
 func LogSuccess(msg string) {
-	log.Printf("SUCCESS: %s", msg)
+	color.Green("SUCCESS: %s", msg)
 }
