@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
-	"khanhnguyen234/api-gateway/database/models"
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
+	"github.com/joho/godotenv"
 	"net/http"
 	"encoding/json"
 	"io/ioutil"
+	"khanhnguyen234/api-gateway/_mongo"
+	"khanhnguyen234/api-gateway/common"
+	"khanhnguyen234/api-gateway/apis/auth"
+
 )
 
 func main() {
@@ -15,15 +18,18 @@ func main() {
 }
 
 func initRouter() {
+	err := godotenv.Load()
+	common.LogStatus(err, "Load Env")
 
-	r := gin.Default()
+	_mongo.ConnectMongo()
 
-	r.POST("/get_info_user", models.GetInfoUser)
+	gin.SetMode(gin.ReleaseMode)
+	route := gin.Default()
 
-	r.POST("/insert_user", models.InsertUser)
+	basePath := route.Group("/")
+	auth.AuthRouters(basePath.Group("/auth"))
 
-	r.GET("/api_service_1", func (c *gin.Context) {
-		// response, err := http.Get("http://localhost:7001/param/param/7001")
+	route.GET("/api_service_1", func (c *gin.Context) {
 		response, err := http.Get("http://localhost:7001/query?name=query&id=7001")
 		if err != nil {
 			c.JSON(400, gin.H{"err": err})
@@ -40,7 +46,7 @@ func initRouter() {
 		}
 	})
 
-	r.GET("/api_service_1/products/filter", func (c *gin.Context) {
+	route.GET("/api_service_1/products/filter", func (c *gin.Context) {
 		var query ProductFilterQuery
 
 		if err := c.ShouldBindQuery(&query); err != nil {
@@ -62,7 +68,8 @@ func initRouter() {
 		}
 	})
 
-	r.Run(":7000")
+	common.LogSuccess("Listening and serving HTTP on :7000")
+	route.Run(":7000")
 }
 
 type PersonParam struct {
