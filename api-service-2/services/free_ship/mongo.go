@@ -12,6 +12,6 @@ func InsertToMongo(data FreeshipCreateConsume) {
 	ctx := common.GetContext()
 	_, err := freeShipCollection.InsertOne(ctx, data)
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 }

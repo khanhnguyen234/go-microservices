@@ -10,10 +10,10 @@ import (
 
 func GenToken(data AuthModel) string {
 	authClaims := jwt.MapClaims{
-		"id": data.ID,
+		"id":    data.ID,
 		"phone": data.Phone,
 		"email": data.Email,
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+		"exp":   time.Now().Add(time.Hour * 24).Unix(),
 	}
 
 	auth := jwt.NewWithClaims(jwt.SigningMethodHS256, authClaims)
@@ -33,7 +33,6 @@ func TokenValid(r *http.Request) error {
 	}
 	return nil
 }
-
 
 func VerifyToken(r *http.Request) (*jwt.Token, error) {
 	tokenString := r.Header.Get("Authorization")

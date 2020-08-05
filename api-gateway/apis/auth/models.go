@@ -2,9 +2,9 @@ package auth
 
 import (
 	"errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	_ "go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/bson"
 	_ "go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
 	"khanhnguyen234/api-gateway/_mongo"
@@ -16,10 +16,10 @@ const (
 )
 
 type AuthModel struct {
-	ID     			primitive.ObjectID 	`bson:"_id,omitempty"`
-	Phone  			string             	`bson:"phone,omitempty"`
-	PasswordHash 	string             	`bson:"password_hash,omitempty"`
-	Email   		string           	`bson:"email,omitempty"`
+	ID           primitive.ObjectID `bson:"_id,omitempty"`
+	Phone        string             `bson:"phone,omitempty"`
+	PasswordHash string             `bson:"password_hash,omitempty"`
+	Email        string             `bson:"email,omitempty"`
 }
 
 func (u *AuthModel) setPassword(password string) error {

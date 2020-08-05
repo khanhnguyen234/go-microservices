@@ -1,16 +1,16 @@
 package products
 
 import (
-	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-service-1/_redis"
-	"khanhnguyen234/api-service-1/_postgres"
-	"khanhnguyen234/api-service-1/utils"
-	"khanhnguyen234/api-service-1/apis/redis"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"khanhnguyen234/api-service-1/_postgres"
+	"khanhnguyen234/api-service-1/_redis"
+	"khanhnguyen234/api-service-1/apis/redis"
+	"khanhnguyen234/api-service-1/utils"
 	"net/http"
 )
 
-func ProductCache (c *gin.Context) {
+func ProductCache(c *gin.Context) {
 	redis.Increase()
 	var query ProductFilterRequest
 	if err := c.ShouldBindQuery(&query); err != nil {
@@ -19,8 +19,8 @@ func ProductCache (c *gin.Context) {
 	}
 
 	stringResult, err := _redis.Get(query.Price)
-	if (err != true) {
-		result := utils.ParseJsonToStruct(stringResult);
+	if err != true {
+		result := utils.ParseJsonToStruct(stringResult)
 		c.JSON(200, gin.H{"isCache": true, "count": result["Count"]})
 		return
 	}
@@ -38,7 +38,7 @@ func ProductCache (c *gin.Context) {
 	c.JSON(200, gin.H{"isCache": false, "count": result["Count"]})
 }
 
-func ProductCreate (c *gin.Context) {
+func ProductCreate(c *gin.Context) {
 	redis.Increase()
 	var body ProductCreateRequest
 
@@ -56,7 +56,7 @@ func ProductCreate (c *gin.Context) {
 	c.JSON(200, gin.H{"result": product, "elasticId": elasticId})
 }
 
-func ProductList (c *gin.Context) {
+func ProductList(c *gin.Context) {
 	redis.Increase()
 	var products []ProductModel
 
@@ -66,7 +66,7 @@ func ProductList (c *gin.Context) {
 	c.JSON(200, gin.H{"result": products})
 }
 
-func ProductDetail (c *gin.Context) {
+func ProductDetail(c *gin.Context) {
 	redis.Increase()
 	var uri ProductDetailRequest
 
@@ -74,7 +74,7 @@ func ProductDetail (c *gin.Context) {
 		c.JSON(400, gin.H{"msg": err})
 		return
 	}
-	fmt.Println(uri);
+	fmt.Println(uri)
 
 	var product ProductModel
 	db := _postgres.GetPostgres()
@@ -83,7 +83,7 @@ func ProductDetail (c *gin.Context) {
 	c.JSON(200, gin.H{"result": product})
 }
 
-func ProductFilter (c *gin.Context) {
+func ProductFilter(c *gin.Context) {
 	redis.Increase()
 	var query ProductFilterRequest
 
@@ -91,7 +91,7 @@ func ProductFilter (c *gin.Context) {
 		c.JSON(400, gin.H{"msg": err})
 		return
 	}
-	fmt.Println(query);
+	fmt.Println(query)
 
 	var products []ProductModel
 	var count int
@@ -101,7 +101,7 @@ func ProductFilter (c *gin.Context) {
 	c.JSON(200, gin.H{"count": count, "result": products})
 }
 
-func ProductSearch (c *gin.Context) {
+func ProductSearch(c *gin.Context) {
 	redis.Increase()
 	var uri ProductSearchRequest
 
@@ -109,10 +109,9 @@ func ProductSearch (c *gin.Context) {
 		c.JSON(400, gin.H{"msg": err})
 		return
 	}
-	fmt.Println(uri);
+	fmt.Println(uri)
 
 	products := ElasticGetProductByName(uri.Name)
-
 
 	c.JSON(200, gin.H{"result": products})
 }

@@ -8,10 +8,10 @@ import (
 )
 
 type AuthResponse struct {
-	ID       		string
-	Phone  			string
-	Email   		string
-	Token   		string
+	ID    string
+	Phone string
+	Email string
+	Token string
 }
 
 func SignUpController(validator SignUpValidator) SignUpRequest {
@@ -23,7 +23,6 @@ func SignUpController(validator SignUpValidator) SignUpRequest {
 	InsertAuth(validator.auth)
 	return auth
 }
-
 
 func SignInController(validator SignUpValidator) (AuthResponse, common.ErrorFields) {
 	authModel, err := FindOneUser(validator.Request.Email)
@@ -39,7 +38,7 @@ func SignInController(validator SignUpValidator) (AuthResponse, common.ErrorFiel
 	token := GenToken(authModel)
 
 	return AuthResponse{
-		ID: authModel.ID.Hex(),
+		ID:    authModel.ID.Hex(),
 		Phone: authModel.Phone,
 		Email: authModel.Email,
 		Token: token,
@@ -59,7 +58,7 @@ func AuthContextController(r *http.Request) (AuthResponse, error) {
 	}
 
 	return AuthResponse{
-		ID: claims["id"].(string),
+		ID:    claims["id"].(string),
 		Phone: claims["phone"].(string),
 		Email: claims["email"].(string),
 	}, nil

@@ -5,8 +5,8 @@ import (
 )
 
 type ProductCreateRequest struct {
-	Name string `form:"name" json:"name" xml:"name" binding:"required"`
-	Price int `form:"price" json:"price" xml:"price" binding:"required"`
+	Name  string `form:"name" json:"name" xml:"name" binding:"required"`
+	Price int    `form:"price" json:"price" xml:"price" binding:"required"`
 }
 
 type ProductDetailRequest struct {
@@ -18,12 +18,12 @@ type ProductSearchRequest struct {
 }
 
 type ProductFilterRequest struct {
-	Name string `form:"name"`
+	Name  string `form:"name"`
 	Price string `form:"price"`
 }
 
 type ProductModel struct {
 	gorm.Model
-	Name string
+	Name  string
 	Price int
 }

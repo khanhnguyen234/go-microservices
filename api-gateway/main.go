@@ -1,16 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"net/http"
-	"encoding/json"
 	"io/ioutil"
 	"khanhnguyen234/api-gateway/_mongo"
-	"khanhnguyen234/api-gateway/common"
 	"khanhnguyen234/api-gateway/apis/auth"
-
+	"khanhnguyen234/api-gateway/common"
+	"net/http"
 )
 
 func main() {
@@ -29,24 +28,24 @@ func initRouter() {
 	basePath := route.Group("/")
 	auth.AuthRouters(basePath.Group("/auth"))
 
-	route.GET("/api_service_1", func (c *gin.Context) {
+	route.GET("/api_service_1", func(c *gin.Context) {
 		response, err := http.Get("http://localhost:7001/query?name=query&id=7001")
 		if err != nil {
 			c.JSON(400, gin.H{"err": err})
 		} else {
-				var person PersonParam	
-				data, _ := ioutil.ReadAll(response.Body)
-				stringJson := string(data)
-				json.Unmarshal([]byte(stringJson), &person)
+			var person PersonParam
+			data, _ := ioutil.ReadAll(response.Body)
+			stringJson := string(data)
+			json.Unmarshal([]byte(stringJson), &person)
 
-				fmt.Println(stringJson)
-				fmt.Println(person)
+			fmt.Println(stringJson)
+			fmt.Println(person)
 
-				c.JSON(200, gin.H{"data": person})
+			c.JSON(200, gin.H{"data": person})
 		}
 	})
 
-	route.GET("/api_service_1/products/filter", func (c *gin.Context) {
+	route.GET("/api_service_1/products/filter", func(c *gin.Context) {
 		var query ProductFilterQuery
 
 		if err := c.ShouldBindQuery(&query); err != nil {
@@ -59,12 +58,12 @@ func initRouter() {
 		if err != nil {
 			c.JSON(400, gin.H{"err": err})
 		} else {
-				var result map[string]interface{}	
-				data, _ := ioutil.ReadAll(response.Body)
-				stringJson := string(data)
-				json.Unmarshal([]byte(stringJson), &result)
+			var result map[string]interface{}
+			data, _ := ioutil.ReadAll(response.Body)
+			stringJson := string(data)
+			json.Unmarshal([]byte(stringJson), &result)
 
-				c.JSON(200, gin.H{"result": result["result"]})
+			c.JSON(200, gin.H{"result": result["result"]})
 		}
 	})
 
@@ -74,10 +73,10 @@ func initRouter() {
 
 type PersonParam struct {
 	Name string
-	Id string
+	Id   string
 }
 
 type ProductFilterQuery struct {
-	Name string `form:"name"`
+	Name  string `form:"name"`
 	Price string `form:"price"`
 }

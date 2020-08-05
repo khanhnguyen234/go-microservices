@@ -1,10 +1,10 @@
 package free_ship
 
 import (
-	"log"
 	"encoding/json"
-	"khanhnguyen234/api-service-2/common"
 	"khanhnguyen234/api-service-2/_rabbitmq"
+	"khanhnguyen234/api-service-2/common"
+	"log"
 )
 
 func FreeShipConsummer() {
@@ -13,34 +13,34 @@ func FreeShipConsummer() {
 	queueLogs := _rabbitmq.Queue{
 		ExchangeName: "logs",
 		ExchangeType: "fanout",
-		QueueName: "",
-		RoutingKey: "",
+		QueueName:    "",
+		RoutingKey:   "",
 	}
 
 	err = ch.ExchangeDeclare(
-		queueLogs.ExchangeName,   // name
+		queueLogs.ExchangeName, // name
 		queueLogs.ExchangeType, // type
-		true,     // durable
-		false,    // auto-deleted
-		false,    // internal
-		false,    // no-wait
-		nil,      // arguments
+		true,                   // durable
+		false,                  // auto-deleted
+		false,                  // internal
+		false,                  // no-wait
+		nil,                    // arguments
 	)
 	common.LogError(err, "ExchangeDeclare")
 
 	q, err := ch.QueueDeclare(
-		queueLogs.QueueName,    // name
-		false, // durable
-		false, // delete when unused
-		true,  // exclusive
-		false, // no-wait
-		nil,   // arguments
+		queueLogs.QueueName, // name
+		false,               // durable
+		false,               // delete when unused
+		true,                // exclusive
+		false,               // no-wait
+		nil,                 // arguments
 	)
 	common.LogError(err, "QueueDeclare")
 
 	err = ch.QueueBind(
-		queueLogs.QueueName, // queue name
-		queueLogs.RoutingKey,     // routing key
+		queueLogs.QueueName,    // queue name
+		queueLogs.RoutingKey,   // routing key
 		queueLogs.ExchangeName, // exchange
 		false,
 		nil,

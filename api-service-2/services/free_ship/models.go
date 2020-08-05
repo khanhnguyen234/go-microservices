@@ -5,7 +5,7 @@ import (
 )
 
 type FreeshipCreateConsume struct {
-	ID     primitive.ObjectID `bson:"_id,omitempty"`
-	Product_Id string `json:"product_id," binding:"required"`
-	Is_Free_Ship bool `json:"is_free_ship" binding:"required"`
+	ID           primitive.ObjectID `bson:"_id,omitempty"`
+	Product_Id   string             `json:"product_id," binding:"required"`
+	Is_Free_Ship bool               `json:"is_free_ship" binding:"required"`
 }

@@ -2,8 +2,8 @@ package utils
 
 import (
 	"math/rand"
-	"time"
 	"strings"
+	"time"
 )
 
 func RandomString(length int) string {
@@ -12,9 +12,9 @@ func RandomString(length int) string {
 	charSet := "abcdedfghijklmnopqrstABCDEFGHIJKLMNOP"
 
 	for i := 0; i < length; i++ {
-			random := rand.Intn(len(charSet))
-			randomChar := charSet[random]
-			output.WriteString(string(randomChar))
+		random := rand.Intn(len(charSet))
+		randomChar := charSet[random]
+		output.WriteString(string(randomChar))
 	}
 	return output.String()
 }

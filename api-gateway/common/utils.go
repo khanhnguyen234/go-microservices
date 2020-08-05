@@ -1,6 +1,5 @@
 package common
 
-
 type ErrorFields struct {
 	Errors map[string]interface{} `json:"errorFields"`
 }

@@ -7,15 +7,14 @@ import (
 	"time"
 )
 
-
-func RedisCount (c *gin.Context) {
+func RedisCount(c *gin.Context) {
 	value := Increase()
 	c.JSON(200, gin.H{"result": value})
 }
 
 func Increase() int {
 	key := "COUNT_REQUEST"
-	var value int 
+	var value int
 
 	redis := _redis.GetRedis()
 	stringPrev, err := redis.Get(key).Result()
@@ -27,7 +26,7 @@ func Increase() int {
 
 	value = intPrev + 1
 	// redis.Set(key, value, 0)
-	redis.Set(key, value, 5 * time.Minute)
+	redis.Set(key, value, 5*time.Minute)
 
 	return value
 }

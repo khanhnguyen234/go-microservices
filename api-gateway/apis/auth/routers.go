@@ -2,8 +2,8 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"khanhnguyen234/api-gateway/common"
+	"net/http"
 )
 
 func AuthRouters(router *gin.RouterGroup) {
@@ -23,7 +23,6 @@ func SignUpRouter(c *gin.Context) {
 	auth := SignUpController(validator)
 	c.JSON(http.StatusCreated, gin.H{"auth": auth})
 }
-
 
 func SignInRouter(c *gin.Context) {
 	var validator SignUpValidator

@@ -1,18 +1,18 @@
 package products
 
 import (
-	"khanhnguyen234/api-service-1/_elastic"
 	"context"
-	"reflect"
 	"fmt"
+	"khanhnguyen234/api-service-1/_elastic"
+	"reflect"
 )
 
 const (
 	elasticIndexName = "product"
-	elasticTypeName = "byName"
+	elasticTypeName  = "byName"
 )
 
-func ElasticCreateProduct (product ProductModel) string {
+func ElasticCreateProduct(product ProductModel) string {
 	ctx := context.Background()
 	elasticClient := _elastic.GetElastic()
 
@@ -30,11 +30,11 @@ func ElasticCreateProduct (product ProductModel) string {
 	}
 
 	put, err := elasticClient.Index().
-							Index(elasticIndexName).
-							Type(elasticTypeName).
-							Id(product.Name).
-							BodyJson(product).
-							Do(ctx)
+		Index(elasticIndexName).
+		Type(elasticTypeName).
+		Id(product.Name).
+		BodyJson(product).
+		Do(ctx)
 
 	if err != nil {
 		panic(err)
@@ -65,11 +65,10 @@ func ElasticGetProductByName(name string) []ProductModel {
 		Source(_search).
 		Pretty(true).
 		Do(ctx)
-		
+
 	if err != nil {
 		panic(err)
 	}
-	
 
 	var product ProductModel
 	var products []ProductModel

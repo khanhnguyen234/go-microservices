@@ -2,7 +2,7 @@ package auth
 
 type SignUpValidator struct {
 	Request SignUpRequest
-	auth AuthModel `json:"-"`
+	auth    AuthModel `json:"-"`
 }
 
 type SignUpRequest struct {
