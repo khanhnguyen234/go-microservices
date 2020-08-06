@@ -50,8 +50,10 @@ func ProductCreate(c *gin.Context) {
 	product := ProductModel{Name: body.Name, Price: body.Price}
 
 	db := _postgres.GetPostgres()
+
 	db.Create(&product)
 	elasticId := ElasticCreateProduct(product)
+	PubProductCreated(product)
 
 	c.JSON(200, gin.H{"result": product, "elasticId": elasticId})
 }

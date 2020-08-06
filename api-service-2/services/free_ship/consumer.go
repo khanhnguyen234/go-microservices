@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func FreeShipConsummer() {
+func FreeShipConsumer() {
 	ch, err := _rabbitmq.GetChannel()
 
 	queueLogs := _rabbitmq.Queue{

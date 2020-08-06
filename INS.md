@@ -20,3 +20,11 @@ redis-cli
 - Gorm: https://gorm.io/docs/
 - Redis: https://github.com/go-redis/redis
 - Elasticsearch: https://github.com/olivere/elastic/wiki
+- Mongo: https://github.com/mongodb/mongo-go-driver
+- Job: https://github.com/jasonlvhit/gocron
+
+## More
+- Job:
+    Define - Use Redis: https://gobuffalo.io/en/docs/workers#how-to-use-background-tasks
+    Use Redis: https://github.com/gocraft/work
+    Use Redis: https://github.com/benmanns/goworker

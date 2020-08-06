@@ -8,13 +8,6 @@ import (
 	"khanhnguyen234/api-service-2/services/free_ship"
 )
 
-type Queue struct {
-	ExchangeName string
-	ExchangeType string
-	QueueName    string
-	RoutingKey   string
-}
-
 func main() {
 	err := godotenv.Load()
 	common.LogStatus(err, "Load Env")
@@ -22,9 +15,11 @@ func main() {
 	_mongo.ConnectMongo()
 	_, err = _rabbitmq.ConnectRabbitMQ()
 
-	if err == nil {
-		free_ship.FreeShipConsummer()
+	if err != nil {
+		return
 	}
+
+	free_ship.FreeShipConsumer()
 
 	forever := make(chan bool)
 	<-forever

@@ -15,6 +15,6 @@ func Publish(c *gin.Context) {
 	jsonBody, _ := json.Marshal(body)
 	msg := string(jsonBody)
 
-	_rabbitmq.LogsPublisher(msg)
+	_rabbitmq.PubFreeShip(msg)
 	c.JSON(200, gin.H{"result": body})
 }
