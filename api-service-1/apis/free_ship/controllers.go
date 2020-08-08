@@ -1,9 +1,8 @@
-package freeship
+package free_ship
 
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-service-1/_rabbitmq"
 )
 
 func Publish(c *gin.Context) {
@@ -14,7 +13,7 @@ func Publish(c *gin.Context) {
 
 	jsonBody, _ := json.Marshal(body)
 	msg := string(jsonBody)
+	PubFreeShip(msg)
 
-	_rabbitmq.PubFreeShip(msg)
 	c.JSON(200, gin.H{"result": body})
 }

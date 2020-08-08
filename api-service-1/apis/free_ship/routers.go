@@ -1,4 +1,4 @@
-package freeship
+package free_ship
 
 import (
 	"github.com/gin-gonic/gin"

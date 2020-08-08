@@ -1,4 +1,4 @@
-package freeship
+package free_ship
 
 type FreeshipCreateRequest struct {
 	ProductId  string `form:"product_id" json:"product_id" xml:"product_id" binding:"required"`

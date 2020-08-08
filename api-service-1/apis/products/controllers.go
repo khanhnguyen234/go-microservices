@@ -1,6 +1,7 @@
 package products
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"khanhnguyen234/api-service-1/_postgres"
@@ -50,10 +51,13 @@ func ProductCreate(c *gin.Context) {
 	product := ProductModel{Name: body.Name, Price: body.Price}
 
 	db := _postgres.GetPostgres()
-
 	db.Create(&product)
+
 	elasticId := ElasticCreateProduct(product)
-	PubProductCreated(product)
+
+	jsonBody, _ := json.Marshal(product)
+	msg := string(jsonBody)
+	PubProductCreated(msg)
 
 	c.JSON(200, gin.H{"result": product, "elasticId": elasticId})
 }

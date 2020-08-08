@@ -6,7 +6,7 @@ import (
 	"khanhnguyen234/api-service-1/_postgres"
 	"khanhnguyen234/api-service-1/_rabbitmq"
 	"khanhnguyen234/api-service-1/_redis"
-	"khanhnguyen234/api-service-1/apis/freeship"
+	"khanhnguyen234/api-service-1/apis/free_ship"
 	"khanhnguyen234/api-service-1/apis/products"
 	"khanhnguyen234/api-service-1/apis/redis"
 	"khanhnguyen234/api-service-1/common"
@@ -39,7 +39,7 @@ func main() {
 	noAuth := route.Group("/no-auth")
 	products.ProductNoAuthRegister(noAuth.Group("/products"))
 	redis.RedisNoAuth(noAuth.Group("/redis"))
-	freeship.FreeshipNoAuth(noAuth.Group("/freeship"))
+	free_ship.FreeshipNoAuth(noAuth.Group("/free_ship"))
 
 	common.LogSuccess("Listening and serving HTTP on :7001")
 	route.Run(":7001")
