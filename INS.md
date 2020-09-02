@@ -27,4 +27,26 @@ redis-cli
 - Job:
     Define - Use Redis: https://gobuffalo.io/en/docs/workers#how-to-use-background-tasks
     Use Redis: https://github.com/gocraft/work
-    Use Redis: https://github.com/benmanns/goworker
+    Use Redis: https://github.com/benmanns/
+    
+    
+- Elasticsearch:
+```
+	_search := fmt.Sprintf(`
+	{
+		"query": {
+			"prefix": {
+				"name": {
+					"value": "%s"
+				}
+			}
+		}
+	}
+	`, q)
+	
+	searchResult, err := elasticClient.Search().
+		Index(index).
+		Source(_search).
+		Pretty(true).
+		Do(ctx)
+```
