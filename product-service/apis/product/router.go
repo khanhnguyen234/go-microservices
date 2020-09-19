@@ -8,8 +8,8 @@ import (
 func ProductRouters(router *gin.RouterGroup) {
 	router.POST("/search", SearchProductRouter)
 	router.GET("/:id", GetProductDetailRouter)
-	router.POST("/", CreateProductRouter)
-	router.GET("/", GetProductsRouter)
+	router.POST("", CreateProductRouter)
+	router.GET("", GetProductsRouter)
 }
 
 func CreateProductRouter(c *gin.Context) {
