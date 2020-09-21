@@ -1,13 +1,16 @@
 package product
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func ProductRouters(router *gin.RouterGroup) {
 	router.POST("/search", SearchProductRouter)
-	router.GET("/:id", GetProductDetailRouter)
+	router.GET("/flash-sale", GetProductsFlashSaleRouter)
+	router.GET("/detail/:id", GetProductDetailRouter)
 	router.POST("", CreateProductRouter)
 	router.GET("", GetProductsRouter)
 }
@@ -26,6 +29,15 @@ func CreateProductRouter(c *gin.Context) {
 
 func GetProductsRouter(c *gin.Context) {
 	products := GetProductsController()
+	c.JSON(200, gin.H{"result": products})
+}
+
+func GetProductsFlashSaleRouter(c *gin.Context) {
+	var query ProductFlashSale
+	if c.ShouldBindQuery(&query) == nil {
+		fmt.Println("====== Only Bind By Query String ======")
+	}
+	products := GetProductsFlashSaleController(query)
 	c.JSON(200, gin.H{"result": products})
 }
 

@@ -38,12 +38,12 @@ func Set(key string, value string) error {
 	return nil
 }
 
-func Get(key string) (string, bool) {
+func Get(key string) (string, error) {
 	value, err := RDB.Get(key).Result()
 
 	if err != nil {
-		return "", true
+		return "", err
 	}
 
-	return value, false
+	return value, err
 }

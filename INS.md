@@ -19,6 +19,7 @@ redis-cli
 - Gin: https://github.com/gin-gonic/gin
 - Gorm: https://gorm.io/docs/
 - Redis: https://github.com/go-redis/redis
+         https://pkg.go.dev/github.com/go-redis/redis/v8
 - Elasticsearch: https://github.com/olivere/elastic/wiki
 - Mongo: https://github.com/mongodb/mongo-go-driver
 - Job: https://github.com/jasonlvhit/gocron

@@ -8,9 +8,20 @@ func CreateProductController(p ProductCreate) ProductCreate {
 	return product
 }
 
-func GetProductsController() []ProductModel {
-	var product ProductModel
+func GetProductsController() []ProductCreate {
+	var product ProductCreate
 	products, _ := product.GetProductsMongo()
+
+	return products
+}
+
+func GetProductsFlashSaleController(query ProductFlashSale) []ProductCreate {
+	var product ProductCreate
+
+	products, _ := product.GetProductsFlashSaleRedis(query)
+	if products == nil {
+		products, _ = product.GetProductsFlashSaleMongo(query)
+	}
 
 	return products
 }
