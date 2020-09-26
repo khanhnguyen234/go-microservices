@@ -17,8 +17,12 @@ func GetProductsController() []ProductCreate {
 
 func GetProductsFlashSaleController(query ProductFlashSale) []ProductCreate {
 	var product ProductCreate
+	var products []ProductCreate
 
-	products, _ := product.GetProductsFlashSaleRedis(query)
+	if query.Src == "cache" {
+		products, _ = product.GetProductsFlashSaleRedis(query)
+	}
+
 	if products == nil {
 		products, _ = product.GetProductsFlashSaleMongo(query)
 	}
@@ -26,8 +30,8 @@ func GetProductsFlashSaleController(query ProductFlashSale) []ProductCreate {
 	return products
 }
 
-func GetProductDetailController(id string) ProductModel {
-	var product ProductModel
+func GetProductDetailController(id string) ProductCreate {
+	var product ProductCreate
 	product, _ = product.GetProductDetailMongo(id)
 
 	return product

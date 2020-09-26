@@ -1,7 +1,12 @@
 package product
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
+	uuid "github.com/satori/go.uuid"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"khanhnguyen234/product-service/_elastic"
 	"khanhnguyen234/product-service/_mongo"
 	"khanhnguyen234/product-service/_rabbitmq"
@@ -10,11 +15,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
-
-	"github.com/olivere/elastic"
-	uuid "github.com/satori/go.uuid"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 )
 
 const (
@@ -27,6 +28,9 @@ func (s *ProductCreate) CreateProductMongo(product ProductCreate) (ProductCreate
 	if product.Id == "" {
 		product.Id = uuid.NewV4().String()
 	}
+	product.CreatedAt = time.Now()
+	product.UpdatedAt = time.Now()
+
 	err := _mongo.InsertOne(collection, product)
 
 	return product, err
@@ -58,7 +62,7 @@ func CreateProductSub() {
 			var data ProductCreate
 			json.Unmarshal([]byte(d.Body), &data)
 			data.CreateProductElastic(data)
-			data.CreateProductRedis(data)
+			//data.CreateProductRedis(data)
 		}
 	}()
 }
@@ -81,7 +85,11 @@ func (s *ProductCreate) GetProductsMongo() ([]ProductCreate, error) {
 
 	ctx := common.GetContext()
 	condition := bson.D{}
-	cur, err := c.Find(ctx, condition)
+
+	options := options.Find()
+	options.SetSort(bson.D{{"updated_at", -1}})
+
+	cur, err := c.Find(ctx, condition, options)
 
 	var products []ProductCreate
 
@@ -116,9 +124,7 @@ func (s *ProductCreate) GetProductsFlashSaleMongo(query ProductFlashSale) ([]Pro
 	}
 
 	options := options.Find()
-
-	// Sort by `_id` field descending
-	options.SetSort(bson.D{{"price", -1}})
+	options.SetSort(bson.D{{"updated_at", -1}})
 
 	if query.Limit != 0 {
 		options.SetLimit(query.Limit)
@@ -152,9 +158,10 @@ func (s *ProductCreate) GetProductsFlashSaleMongo(query ProductFlashSale) ([]Pro
 func (s *ProductCreate) GetProductsFlashSaleRedis(query ProductFlashSale) ([]ProductCreate, error) {
 	var products []ProductCreate
 	unix := query.Time
+	numberRecord := query.Limit*2 - 2
 
 	redis := _redis.GetRedis()
-	slices, _ := redis.LRange(strings.Join([]string{"flash_sale", strconv.Itoa(unix)}, "-"), 0, 1000).Result()
+	slices, _ := redis.LRange(strings.Join([]string{"flash_sale", strconv.Itoa(unix)}, "-"), 0, numberRecord).Result()
 	for _, slice := range slices {
 		var product ProductCreate
 		json.Unmarshal([]byte(slice), &product)
@@ -167,11 +174,11 @@ func (s *ProductCreate) GetProductsFlashSaleRedis(query ProductFlashSale) ([]Pro
 	return products, nil
 }
 
-func (s *ProductModel) GetProductDetailMongo(id string) (ProductModel, error) {
+func (s *ProductCreate) GetProductDetailMongo(id string) (ProductCreate, error) {
 	db := _mongo.ConnectMongo()
 	c := db.Collection(collection)
 
-	var productModel ProductModel
+	var productModel ProductCreate
 	condition := bson.M{"id": id}
 
 	ctx := common.GetContext()
@@ -180,9 +187,45 @@ func (s *ProductModel) GetProductDetailMongo(id string) (ProductModel, error) {
 	return productModel, err
 }
 
+//func (s *ProductModel) SearchProductElastic(p ProductSearch) []interface{} {
+//	query := elastic.NewPrefixQuery("name", p.Name)
+//	searchResult := _elastic.Search(eIndex, query)
+//
+//	var product ProductCreate
+//	var products []interface{}
+//	for _, item := range searchResult.Each(reflect.TypeOf(product)) {
+//		if t, ok := item.(ProductCreate); ok {
+//			products = append(products, t)
+//		}
+//	}
+//
+//	return products
+//}
+
 func (s *ProductModel) SearchProductElastic(p ProductSearch) []interface{} {
-	query := elastic.NewPrefixQuery("name", p.Name)
-	searchResult := _elastic.Search(eIndex, query)
+	elasticClient := _elastic.GetElastic()
+
+	_search := fmt.Sprintf(`
+	{
+		"query": {
+			"multi_match": {
+				"query" : "%s",
+				"fields": ["name", "description"],
+				"fuzziness": "AUTO"
+			}
+		}
+	}
+	`, p.Name)
+
+	searchResult, err := elasticClient.Search().
+		Index(eIndex).
+		Source(_search).
+		Pretty(true).
+		Do(context.Background())
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	var product ProductCreate
 	var products []interface{}
