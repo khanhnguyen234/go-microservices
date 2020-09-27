@@ -25,13 +25,33 @@ const (
 )
 
 func (s *ProductCreate) CreateProductMongo(product ProductCreate) (ProductCreate, error) {
-	if product.Id == "" {
-		product.Id = uuid.NewV4().String()
-	}
+	product.Id = uuid.NewV4().String()
 	product.CreatedAt = time.Now()
 	product.UpdatedAt = time.Now()
-
 	err := _mongo.InsertOne(collection, product)
+
+	return product, err
+}
+
+func (s *ProductCreate) UpdateProductMongo(product ProductCreate) (ProductCreate, error) {
+	db := _mongo.ConnectMongo()
+	c := db.Collection(collection)
+
+	filter := bson.M{"id": product.Id}
+	update := bson.M{
+		"$set": bson.M{
+			"name":                  product.Name,
+			"price":                 product.Price,
+			"description":           product.Description,
+			"image_url":             product.ImageUrl,
+			"video_url":             product.VideoUrl,
+			"flash_sale":            product.FlashSale,
+			"flash_sale_unix_start": product.FlashSaleUnixStart,
+			"flash_sale_unix_end":   product.FlashSaleUnixEnd,
+			"updated_at":            time.Now(),
+		},
+	}
+	_, err := c.UpdateOne(context.Background(), filter, update)
 
 	return product, err
 }

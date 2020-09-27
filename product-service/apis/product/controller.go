@@ -1,7 +1,12 @@
 package product
 
 func CreateProductController(p ProductCreate) ProductCreate {
-	product, _ := p.CreateProductMongo(p)
+	var product ProductCreate
+	if p.Id == "" {
+		product, _ = p.CreateProductMongo(p)
+	} else {
+		product, _ = p.UpdateProductMongo(p)
+	}
 	// p.CreateProductElastic(product)
 	// p.CreateProductRedis(product)
 	p.CreateProductPub(product)

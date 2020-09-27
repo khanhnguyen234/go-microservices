@@ -22,6 +22,7 @@ redis-cli
          https://pkg.go.dev/github.com/go-redis/redis/v8
 - Elasticsearch: https://github.com/olivere/elastic/wiki
 - Mongo: https://github.com/mongodb/mongo-go-driver
+         https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo
 - Job: https://github.com/jasonlvhit/gocron
 
 ## More
