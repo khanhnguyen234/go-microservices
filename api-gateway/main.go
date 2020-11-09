@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"khanhnguyen234/api-gateway/_mongo"
 	"khanhnguyen234/api-gateway/apis/auth"
+	"khanhnguyen234/api-gateway/apis/customer"
 	"khanhnguyen234/api-gateway/common"
 	"net/http"
 )
@@ -22,11 +23,12 @@ func initRouter() {
 
 	_mongo.ConnectMongo()
 
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	route := gin.Default()
 
 	basePath := route.Group("/")
 	auth.AuthRouters(basePath.Group("/auth"))
+	customer.CustomerRouters(basePath.Group("/customer"))
 
 	route.GET("/api_service_1", func(c *gin.Context) {
 		response, err := http.Get("http://localhost:7001/query?name=query&id=7001")
