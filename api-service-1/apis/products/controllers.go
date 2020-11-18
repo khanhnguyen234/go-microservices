@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-service-1/_postgres"
-	"khanhnguyen234/api-service-1/_redis"
+	"github.com/khanhnguyen234/go-microservices/_postgres"
+	"github.com/khanhnguyen234/go-microservices/_redis"
+	"github.com/khanhnguyen234/go-microservices/_utils"
 	"khanhnguyen234/api-service-1/apis/redis"
-	"khanhnguyen234/api-service-1/utils"
 	"net/http"
 )
 
@@ -20,8 +20,8 @@ func ProductCache(c *gin.Context) {
 	}
 
 	stringResult, err := _redis.Get(query.Price)
-	if err != true {
-		result := utils.ParseJsonToStruct(stringResult)
+	if err != nil {
+		result := _utils.ParseJsonToStruct(stringResult)
 		c.JSON(200, gin.H{"isCache": true, "count": result["Count"]})
 		return
 	}
@@ -34,7 +34,7 @@ func ProductCache(c *gin.Context) {
 	result := make(map[string]interface{})
 	result["Count"] = count
 
-	redisValue := utils.ParseStructToJson(result)
+	redisValue := _utils.ParseStructToJson(result)
 	_redis.Set(query.Price, redisValue)
 	c.JSON(200, gin.H{"isCache": false, "count": result["Count"]})
 }
@@ -125,8 +125,8 @@ func ProductSearch(c *gin.Context) {
 func DummyProduct() {
 	db := _postgres.GetPostgres()
 	for i := 0; i < 100000; i++ {
-		price := utils.RandomInt(1000000)
-		name := utils.RandomString(utils.RandomInt(1000))
+		price := _utils.RandomInt(1000000)
+		name := _utils.RandomString(_utils.RandomInt(1000))
 		product := ProductModel{Name: name, Price: price}
 		db.Create(&product)
 		ElasticCreateProduct(product)

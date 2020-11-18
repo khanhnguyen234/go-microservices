@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"khanhnguyen234/sql/_postgres"
-	"khanhnguyen234/sql/common"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_postgres"
 	"khanhnguyen234/sql/function"
 	"khanhnguyen234/sql/procedure"
 	"khanhnguyen234/sql/trigger"
@@ -12,7 +12,7 @@ import (
 
 func main() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 	_postgres.ConnectPostgres()
 
 	function.ProductSearch()

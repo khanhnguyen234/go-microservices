@@ -3,7 +3,7 @@ package products
 import (
 	"context"
 	"fmt"
-	"khanhnguyen234/api-service-1/_elastic"
+	"github.com/khanhnguyen234/go-microservices/_elastic"
 	"reflect"
 )
 

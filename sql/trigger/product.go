@@ -1,7 +1,7 @@
 package trigger
 
 import (
-	"khanhnguyen234/sql/_postgres"
+	"github.com/khanhnguyen234/go-microservices/_postgres"
 )
 
 func ProductCreate() {

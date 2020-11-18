@@ -8,6 +8,7 @@ require (
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.3.0
+	github.com/khanhnguyen234/go-microservices v0.0.0-20201118180047-00b8853f05e7
 	github.com/olivere/elastic v6.2.34+incompatible
 	github.com/olivere/elastic/v7 v7.0.19
 	github.com/satori/go.uuid v1.2.0

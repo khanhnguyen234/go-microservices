@@ -2,9 +2,9 @@ package email
 
 import (
 	"encoding/json"
-	"khanhnguyen234/job/_mongo"
-	"khanhnguyen234/job/_rabbitmq"
-	"khanhnguyen234/job/common"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
 	"log"
 	"time"
 )
@@ -39,10 +39,10 @@ func SubProductCreate() {
 }
 
 func InsertToMongo(data map[string]interface{}) {
-	db, err := _mongo.ConnectMongo()
+	db := _mongo.ConnectMongo()
 	c := db.Collection("product")
 
-	ctx := common.GetContext()
-	_, err = c.InsertOne(ctx, data)
-	common.LogStatus(err, "Sub Product Created")
+	ctx := _common.GetContext()
+	_, err := c.InsertOne(ctx, data)
+	_common.LogStatus(err, "Sub Product Created")
 }

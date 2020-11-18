@@ -2,15 +2,15 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"khanhnguyen234/api-service-2/_mongo"
-	"khanhnguyen234/api-service-2/_rabbitmq"
-	"khanhnguyen234/api-service-2/common"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
 	"khanhnguyen234/api-service-2/services/free_ship"
 )
 
 func main() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 
 	_mongo.ConnectMongo()
 	_, err = _rabbitmq.ConnectRabbitMQ()

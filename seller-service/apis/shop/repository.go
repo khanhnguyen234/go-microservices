@@ -1,12 +1,12 @@
 package shop
 
 import (
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_elastic"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
 	"github.com/olivere/elastic"
 	"github.com/satori/go.uuid"
 	"go.mongodb.org/mongo-driver/bson"
-	"khanhnguyen234/seller-service/_elastic"
-	"khanhnguyen234/seller-service/_mongo"
-	"khanhnguyen234/seller-service/common"
 	"reflect"
 	"time"
 )
@@ -37,7 +37,7 @@ func (s *ShopModel) GetShopsMongo() ([]ShopModel, error) {
 	db := _mongo.ConnectMongo()
 	c := db.Collection(collection)
 
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	condition := bson.D{}
 	cur, err := c.Find(ctx, condition)
 
@@ -67,7 +67,7 @@ func (s *ShopModel) GetShopDetailMongo(id string) (ShopModel, error) {
 	var shopModel ShopModel
 	condition := bson.M{"id": id}
 
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	err := c.FindOne(ctx, condition).Decode(&shopModel)
 
 	return shopModel, err

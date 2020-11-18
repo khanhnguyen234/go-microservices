@@ -4,14 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_elastic"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
+	"github.com/khanhnguyen234/go-microservices/_redis"
 	uuid "github.com/satori/go.uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"khanhnguyen234/product-service/_elastic"
-	"khanhnguyen234/product-service/_mongo"
-	"khanhnguyen234/product-service/_rabbitmq"
-	"khanhnguyen234/product-service/_redis"
-	"khanhnguyen234/product-service/common"
 	"reflect"
 	"strconv"
 	"strings"
@@ -103,7 +103,7 @@ func (s *ProductCreate) GetProductsMongo() ([]ProductCreate, error) {
 	db := _mongo.ConnectMongo()
 	c := db.Collection(collection)
 
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	condition := bson.D{}
 
 	options := options.Find()
@@ -133,7 +133,7 @@ func (s *ProductCreate) GetProductsMongo() ([]ProductCreate, error) {
 func (s *ProductCreate) GetProductsFlashSaleMongo(query ProductFlashSale) ([]ProductCreate, error) {
 	db := _mongo.ConnectMongo()
 	c := db.Collection(collection)
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 
 	// 1601448417
 	unix := query.Time
@@ -201,7 +201,7 @@ func (s *ProductCreate) GetProductDetailMongo(id string) (ProductCreate, error) 
 	var productModel ProductCreate
 	condition := bson.M{"id": id}
 
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	err := c.FindOne(ctx, condition).Decode(&productModel)
 
 	return productModel, err

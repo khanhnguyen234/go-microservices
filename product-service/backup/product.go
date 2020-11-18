@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"io/ioutil"
-	"khanhnguyen234/product-service/_mongo"
 	"khanhnguyen234/product-service/apis/product"
 	"khanhnguyen234/product-service/common"
 	"log"
@@ -23,7 +23,7 @@ func ProductExport() {
 	db := _mongo.ConnectMongo()
 	c := db.Collection(collection)
 
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	condition := bson.D{}
 
 	options := options.Find()
@@ -64,7 +64,7 @@ func ProductImport() {
 	err = godotenv.Load()
 	db := _mongo.ConnectMongo()
 	c := db.Collection(collection)
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	_, err = c.InsertMany(ctx, products)
 
 	defer jsonFile.Close()

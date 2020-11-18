@@ -2,7 +2,7 @@ package redis
 
 import (
 	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-service-1/_redis"
+	"github.com/khanhnguyen234/go-microservices/_redis"
 	"strconv"
 	"time"
 )

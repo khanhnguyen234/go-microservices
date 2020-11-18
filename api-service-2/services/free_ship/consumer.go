@@ -2,7 +2,7 @@ package free_ship
 
 import (
 	"encoding/json"
-	"khanhnguyen234/api-service-2/_rabbitmq"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
 	"log"
 )
 

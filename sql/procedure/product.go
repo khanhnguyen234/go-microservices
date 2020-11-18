@@ -2,7 +2,7 @@ package procedure
 
 import (
 	"fmt"
-	"khanhnguyen234/sql/_postgres"
+	"github.com/khanhnguyen234/go-microservices/_postgres"
 )
 
 func ProductSearch() {

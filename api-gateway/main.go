@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
 	"io/ioutil"
-	"khanhnguyen234/api-gateway/_mongo"
 	"khanhnguyen234/api-gateway/apis/auth"
 	"khanhnguyen234/api-gateway/apis/customer"
-	"khanhnguyen234/api-gateway/common"
 	"net/http"
 )
 
@@ -19,7 +19,7 @@ func main() {
 
 func initRouter() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 
 	_mongo.ConnectMongo()
 
@@ -69,7 +69,7 @@ func initRouter() {
 		}
 	})
 
-	common.LogSuccess("Listening and serving HTTP on :7000")
+	_common.LogSuccess("Listening and serving HTTP on :7000")
 	route.Run(":7000")
 }
 

@@ -2,7 +2,7 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"khanhnguyen234/api-gateway/common"
+	"github.com/khanhnguyen234/go-microservices/_common"
 	"net/http"
 )
 
@@ -41,7 +41,7 @@ func AuthContextRouter(c *gin.Context) {
 	auth, err := AuthContextController(c.Request)
 
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"auth": nil, "err": common.ErrorToString(err)})
+		c.JSON(http.StatusUnauthorized, gin.H{"auth": nil, "err": _common.ErrorToString(err)})
 		return
 	}
 

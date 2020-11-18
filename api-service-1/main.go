@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"khanhnguyen234/api-service-1/_elastic"
-	"khanhnguyen234/api-service-1/_postgres"
-	"khanhnguyen234/api-service-1/_rabbitmq"
-	"khanhnguyen234/api-service-1/_redis"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_elastic"
+	"github.com/khanhnguyen234/go-microservices/_postgres"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
+	"github.com/khanhnguyen234/go-microservices/_redis"
 	"khanhnguyen234/api-service-1/apis/free_ship"
 	"khanhnguyen234/api-service-1/apis/products"
 	"khanhnguyen234/api-service-1/apis/redis"
-	"khanhnguyen234/api-service-1/common"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -22,7 +22,7 @@ func Migrate(db *gorm.DB) {
 
 func main() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 
 	_redis.ConnectRedis()
 	_elastic.ConnectElastic()
@@ -41,7 +41,7 @@ func main() {
 	redis.RedisNoAuth(noAuth.Group("/redis"))
 	free_ship.FreeshipNoAuth(noAuth.Group("/free_ship"))
 
-	common.LogSuccess("Listening and serving HTTP on :7001")
+	_common.LogSuccess("Listening and serving HTTP on :7001")
 	route.Run(":7001")
 }
 

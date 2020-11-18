@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"khanhnguyen234/api-gateway/common"
+	"github.com/khanhnguyen234/go-microservices/_common"
 	"net/http"
 )
 
@@ -24,15 +24,15 @@ func SignUpController(validator SignUpValidator) SignUpRequest {
 	return auth
 }
 
-func SignInController(validator SignUpValidator) (AuthResponse, common.ErrorFields) {
+func SignInController(validator SignUpValidator) (AuthResponse, _common.ErrorFields) {
 	authModel, err := FindOneUser(validator.Request.Email)
 
 	if err != nil {
-		return AuthResponse{}, common.NewErrorField("email", errors.New("Not Registered email"))
+		return AuthResponse{}, _common.NewErrorField("email", errors.New("Not Registered email"))
 	}
 
 	if authModel.checkPassword(validator.Request.Password) != nil {
-		return AuthResponse{}, common.NewErrorField("password", errors.New("Invalid password"))
+		return AuthResponse{}, _common.NewErrorField("password", errors.New("Invalid password"))
 	}
 
 	token := GenToken(authModel)
@@ -42,7 +42,7 @@ func SignInController(validator SignUpValidator) (AuthResponse, common.ErrorFiel
 		Phone: authModel.Phone,
 		Email: authModel.Email,
 		Token: token,
-	}, common.ErrorFields{}
+	}, _common.ErrorFields{}
 }
 
 func AuthContextController(r *http.Request) (AuthResponse, error) {

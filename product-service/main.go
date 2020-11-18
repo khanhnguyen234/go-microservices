@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"khanhnguyen234/product-service/_elastic"
-	"khanhnguyen234/product-service/_mongo"
-	"khanhnguyen234/product-service/_rabbitmq"
-	"khanhnguyen234/product-service/_redis"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_elastic"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
+	"github.com/khanhnguyen234/go-microservices/_redis"
 	"khanhnguyen234/product-service/apis/product"
-	"khanhnguyen234/product-service/common"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +32,7 @@ func CORS() gin.HandlerFunc {
 
 func main() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 
 	_mongo.ConnectMongo()
 	_redis.ConnectRedis()

@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"khanhnguyen234/seller-service/_elastic"
-	"khanhnguyen234/seller-service/_mongo"
-	"khanhnguyen234/seller-service/_rabbitmq"
-	"khanhnguyen234/seller-service/_redis"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_elastic"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
+	"github.com/khanhnguyen234/go-microservices/_redis"
 	"khanhnguyen234/seller-service/apis/shop"
-	"khanhnguyen234/seller-service/common"
 	"os"
 )
 
 func main() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 
 	_mongo.ConnectMongo()
 	_redis.ConnectRedis()

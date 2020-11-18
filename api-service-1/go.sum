@@ -51,6 +51,10 @@ github.com/jmespath/go-jmespath v0.3.0/go.mod h1:9QtRXoHjLGCJ5IBSaohpXITPlowMeeY
 github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
 github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
 github.com/json-iterator/go v1.1.9/go.mod h1:KdQUCv79m/52Kvf8AW2vK1V8akMuk1QjK/uOdHXbAo4=
+github.com/khanhnguyen234/go-microservices v0.0.0-20201118181134-81e51ebc2166 h1:N7A/rAj396cLtoOB2dGNvSxDm2XAYgxVpEbB4OZ/Njg=
+github.com/khanhnguyen234/go-microservices v0.0.0-20201118181134-81e51ebc2166/go.mod h1:H+d6j7wz6M3p1so6D9sjS3C2HAC5rWTUm9ek+biKHS8=
+github.com/khanhnguyen234/go-microservices v0.0.0-20201118183524-546590cd4d8e h1:qJYkxE6O7Wv5JXwWYv26KcpvAwXNAoHg7VKAnqdRTl4=
+github.com/khanhnguyen234/go-microservices v0.0.0-20201118183524-546590cd4d8e/go.mod h1:H+d6j7wz6M3p1so6D9sjS3C2HAC5rWTUm9ek+biKHS8=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=

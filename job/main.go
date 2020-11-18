@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/jasonlvhit/gocron"
 	"github.com/joho/godotenv"
-	"khanhnguyen234/job/_mongo"
-	"khanhnguyen234/job/_rabbitmq"
-	"khanhnguyen234/job/common"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
 	"khanhnguyen234/job/services/email"
 )
 
@@ -19,10 +19,10 @@ func scheduleTrigger() {
 
 func main() {
 	err := godotenv.Load()
-	common.LogStatus(err, "Load Env")
+	_common.LogStatus(err, "Load Env")
 
 	_, err = _rabbitmq.ConnectRabbitMQ()
-	_, err = _mongo.ConnectMongo()
+	_mongo.ConnectMongo()
 
 	if err != nil {
 		return

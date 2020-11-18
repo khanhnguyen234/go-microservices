@@ -2,13 +2,13 @@ package auth
 
 import (
 	"errors"
+	"github.com/khanhnguyen234/go-microservices/_common"
+	"github.com/khanhnguyen234/go-microservices/_mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	_ "go.mongodb.org/mongo-driver/mongo"
 	_ "go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
-	"khanhnguyen234/api-gateway/_mongo"
-	"khanhnguyen234/api-gateway/common"
 )
 
 const (
@@ -50,7 +50,7 @@ func FindOneUser(email string) (AuthModel, error) {
 	//condition := bson.D{{"email", email}}
 	condition := bson.M{"email": email}
 
-	ctx := common.GetContext()
+	ctx := _common.GetContext()
 	err := c.FindOne(ctx, condition).Decode(&authModel)
 
 	return authModel, err

@@ -1,7 +1,7 @@
 package free_ship
 
 import (
-	"khanhnguyen234/api-service-1/_rabbitmq"
+	"github.com/khanhnguyen234/go-microservices/_rabbitmq"
 )
 
 func PubFreeShip(msg string) {
